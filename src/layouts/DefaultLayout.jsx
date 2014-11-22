@@ -19,16 +19,10 @@ var DefaultLayout = React.createClass({
     };
   },
   render() {
-    var header = this.props.breadcrumb ? (
+    var header = (
       <div className="container">
         <h2>{this.props.title}</h2>
         {this.props.breadcrumb}
-      </div>
-    ) : (
-      <div className="jumbotron">
-        <div className="container text-center">
-          <h1>Bus Duty</h1>
-        </div>
       </div>
     );
 
