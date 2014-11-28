@@ -160,6 +160,7 @@ gulp.task('serve', function(cb) {
 
   runSequence('build', function() {
     browserSync({
+      port: 3001,
       notify: false,
       // Customize the BrowserSync console logging prefix
       logPrefix: 'RSK',
