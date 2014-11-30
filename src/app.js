@@ -49,3 +49,6 @@ AppDispatcher.register((payload) => {
 
   return true; // No errors.  Needed by promise in Dispatcher.
 });
+
+// init Firebase
+window.fbRef = new Firebase('https://blistering-inferno-5872.firebaseio.com/');

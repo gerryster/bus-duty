@@ -4,8 +4,10 @@
 
 'use strict';
 
-var React = require('react');
+var BusRow = require('../components/BusRow.jsx');
 var DefaultLayout = require('../layouts/DefaultLayout.jsx');
+
+var React = require('react');
 
 var HomePage = React.createClass({
   getDefaultProps() {
