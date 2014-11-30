@@ -36,8 +36,21 @@ var routes = {
   '/privacy': () => render(require('./pages/Privacy.jsx'))
 };
 
-// Initialize a router
-var router = new Router(routes).configure({html5history: true}).init();
+// init Firebase
+window.fbRef = new Firebase('https://blistering-inferno-5872.firebaseio.com/');
+var authData = fbRef.getAuth();
+
+if (authData) {
+  // user authenticated with Firebase
+  console.log("User ID: " + authData.uid + ", Provider: " + authData.provider);
+  // Initialize a router
+  var router = new Router(routes).configure({html5history: true}).init();
+} else {
+  fbRef.authWithOAuthRedirect("google",
+    (error) => {
+      console.error('unable to Google authenticate user: ', error);
+  });
+}
 
 AppDispatcher.register((payload) => {
 
@@ -49,6 +62,3 @@ AppDispatcher.register((payload) => {
 
   return true; // No errors.  Needed by promise in Dispatcher.
 });
-
-// init Firebase
-window.fbRef = new Firebase('https://blistering-inferno-5872.firebaseio.com/');
