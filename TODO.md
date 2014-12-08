@@ -7,4 +7,4 @@
 * [ ] install some firebase command line tools and check the rules into revision control
 * [ ] flow
 * [ ] setup CI
-* [ ] improve auth by using the event based login and the UX by showing an option to initate the login process.
+* [ ] improve auth by using the event based login (https://www.firebase.com/docs/web/api/firebase/onauth.html) and the UX by showing an option to initate the login process.
