@@ -79,6 +79,4 @@ if (sessionStorage.reload) {
         console.error('unable to Google authenticate user: ', error);
     });
   }
-
-
 }
