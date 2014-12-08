@@ -38,27 +38,47 @@ var routes = {
 
 // init Firebase
 window.fbRef = new Firebase('https://blistering-inferno-5872.firebaseio.com/');
-var authData = fbRef.getAuth();
 
-if (authData) {
-  // user authenticated with Firebase
-  console.log("User ID: " + authData.uid + ", Provider: " + authData.provider);
-  // Initialize a router
-  var router = new Router(routes).configure({html5history: true}).init();
+// This seems to fix the redirect issue as described here: http://stackoverflow.com/questions/26390027/firebase-authwithoauthredirect-woes
+// I suspect that getAuth() is not synchronous in the redirect response.
+if (sessionStorage.reload) {
+  delete sessionStorage.reload;
+  setTimeout(function() {
+    location.reload();
+  }, 1000)
 } else {
-  fbRef.authWithOAuthRedirect("google",
-    (error) => {
-      console.error('unable to Google authenticate user: ', error);
-  });
-}
+  var authData = fbRef.getAuth();
 
-AppDispatcher.register((payload) => {
+  if (authData) {
+    // user authenticated with Firebase
+    console.log("User ID: " + authData.uid + ", Provider: " + authData.provider);
+    // Initialize a router
+    var router = new Router(routes).configure({html5history: true}).init();
 
-  var action = payload.action;
+    // security debugging
+    fbRef.child("buses").once('value',
+      function(value) {
+        console.log(JSON.stringify(value.val()));
+      });
 
-  if (action.actionType === ActionTypes.SET_CURRENT_ROUTE) {
-      router.setRoute(action.route);
+    AppDispatcher.register((payload) => {
+
+      var action = payload.action;
+
+      if (action.actionType === ActionTypes.SET_CURRENT_ROUTE) {
+          router.setRoute(action.route);
+      }
+
+      return true; // No errors.  Needed by promise in Dispatcher.
+    });
+
+  } else {
+    sessionStorage.reload = true;
+    fbRef.authWithOAuthRedirect("google",
+      (error) => {
+        console.error('unable to Google authenticate user: ', error);
+    });
   }
 
-  return true; // No errors.  Needed by promise in Dispatcher.
-});
+
+}
