@@ -1,0 +1,9 @@
+{
+  "firebase": "blistering-inferno-5872",
+  "public": "build",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
